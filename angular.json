@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-unittesting"
+    }
+  },
+  "defaultProject": "angular-unittesting",
+  "cli": {
+    "analytics": "0113f03e-9f14-4164-a747-8e39c9ae615d"
+  }
 }
