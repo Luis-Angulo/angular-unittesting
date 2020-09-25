@@ -26,4 +26,14 @@ describe('HeroesComponent', () => {
 
     expect(component.heroes.length).toBe(2);
   });
+
+  // "collaborative test" tests interclass interactions
+  it('Should call deleteHero with correct hero', () => {
+    mockHeroSvc.deleteHero.and.returnValue(of(true));
+    component.heroes = HEROES;
+
+    component.delete(HEROES[2]);
+
+    expect(mockHeroSvc.deleteHero).toHaveBeenCalledWith(HEROES[2]);
+  });
 });
