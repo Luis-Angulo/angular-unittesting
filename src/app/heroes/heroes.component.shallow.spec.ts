@@ -1,5 +1,6 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
@@ -35,6 +36,16 @@ describe('HeroesComponent (shallow)', () => {
 
     expect(fixture.componentInstance.heroes.length).toEqual(HEROES.length);
   });
+
+  it('Should write the heroes list to the template', () => {
+    mockHeroSvc.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+    const listElements = fixture.debugElement.queryAll(By.css('li'));
+
+    expect(listElements.length).toBe(HEROES.length);
+  });
+  
+
 });
 
 // mock child component
