@@ -1,4 +1,9 @@
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  Input,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
@@ -44,5 +49,21 @@ describe('HeroesComponent (deep)', () => {
       const hero = childrenDE[i].componentInstance.hero;
       expect(hero.name).toEqual(HEROES[i].name);
     }
+  });
+
+  it('Should call heroService.deleteHero when the HeroComponent delete button is clicked', () => {
+    spyOn(fixture.componentInstance, 'delete'); // watch the delete method
+    mockHeroSvc.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+    const heroComponents: DebugElement[] = fixture.debugElement.queryAll(
+      By.directive(HeroComponent)
+    );
+    // must mock the click handler
+    heroComponents[0]
+      .query(By.css('button'))
+      .triggerEventHandler('click', { stopPropagation: () => {} });
+
+    // Check that delete was called with the first hero
+    expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
   });
 });
