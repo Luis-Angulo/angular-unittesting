@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Hero } from '../hero';
@@ -20,9 +20,10 @@ describe('HeroesComponent (shallow)', () => {
     // mock the service and use the longform provider syntax to use it instead of the real one
     mockHeroSvc = jasmine.createSpyObj(['getHeroes', 'addHero', 'deleteHero']);
     TestBed.configureTestingModule({
-      declarations: [HeroesComponent],
+      declarations: [HeroesComponent, FakeHeroComponent],
       providers: [{ provide: HeroService, useValue: mockHeroSvc }],
-      schemas: [NO_ERRORS_SCHEMA],
+      // Now that all children are mocked, we don't need to squelch schema errors
+      // schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(HeroesComponent);
   });
@@ -35,3 +36,12 @@ describe('HeroesComponent (shallow)', () => {
     expect(fixture.componentInstance.heroes.length).toEqual(HEROES.length);
   });
 });
+
+// mock child component
+@Component({
+  selector: '<app-hero>', // must have the same selector as the real one
+  template: '<div><div>',
+})
+class FakeHeroComponent {
+  @Input() hero: Hero;
+}
