@@ -34,4 +34,17 @@ describe('HeroDetailComponent', () => {
     const text = fixture.nativeElement.querySelector('h2').textContent;
     expect(text).toContain('SUPERDUDE'); // component capitalizes name
   });
+
+  // done is used to tell jasmine when the test is done
+  it('Should call updateHero when save is called', (done) => {
+    mockHeroSvc.updateHero.and.returnValue(of({})); // don't check the return
+    fixture.detectChanges();
+
+    fixture.componentInstance.save();
+
+    setTimeout(() => {
+      expect(mockHeroSvc.updateHero).toHaveBeenCalled();
+      done();
+    }, 300);
+  });
 });

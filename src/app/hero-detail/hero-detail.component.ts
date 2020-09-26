@@ -39,7 +39,7 @@ export class HeroDetailComponent implements OnInit {
       },
       250,
       false
-    );
+    )();
   }
 }
 
