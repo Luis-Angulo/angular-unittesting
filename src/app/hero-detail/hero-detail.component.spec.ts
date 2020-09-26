@@ -1,4 +1,11 @@
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
 import { HeroDetailComponent } from './hero-detail.component';
@@ -46,4 +53,19 @@ describe('HeroDetailComponent', () => {
 
     expect(mockHeroSvc.updateHero).toHaveBeenCalled();
   }));
+
+  // async utility fn from angular is used for promise testing, it cant handle timeouts
+  /*
+  it('Should call updateHero when save is called', async(() => {
+    mockHeroSvc.updateHero.and.returnValue(of({})); // don't check the return
+    fixture.detectChanges();
+
+    fixture.componentInstance.save();
+
+    // returns a promise that resolves when all pending promises in the component have been resolved
+    fixture.whenStable().then(() => {
+      expect(mockHeroSvc.updateHero).toHaveBeenCalled();
+    });
+  }));
+  */
 });

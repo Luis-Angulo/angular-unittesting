@@ -32,6 +32,16 @@ export class HeroDetailComponent implements OnInit {
     this.location.back();
   }
 
+  // using promises to test the async test wrapper
+  save(): void {
+    let p = new Promise((resolve) => {
+      this.heroService.updateHero(this.hero)
+      .subscribe(() => this.goBack());
+      resolve();
+    });
+  }
+
+  /*
   save(): void {
     debounce(
       () => {
@@ -41,6 +51,7 @@ export class HeroDetailComponent implements OnInit {
       false
     )();
   }
+  */
 }
 
 // the ugly debounce function for the course
