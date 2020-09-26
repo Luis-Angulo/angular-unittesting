@@ -1,6 +1,7 @@
 import {
   Component,
   DebugElement,
+  Directive,
   Input,
   NO_ERRORS_SCHEMA,
 } from '@angular/core';
@@ -28,9 +29,8 @@ describe('HeroesComponent (deep)', () => {
     mockHeroSvc = jasmine.createSpyObj(['getHeroes', 'addHero', 'deleteHero']);
 
     TestBed.configureTestingModule({
-      declarations: [HeroesComponent, HeroComponent],
+      declarations: [HeroesComponent, HeroComponent, RouterLinkDirectiveStub],
       providers: [{ provide: HeroService, useValue: mockHeroSvc }],
-      schemas: [NO_ERRORS_SCHEMA],
     });
 
     fixture = TestBed.createComponent(HeroesComponent);
@@ -94,3 +94,17 @@ describe('HeroesComponent (deep)', () => {
     expect(heroText).toContain(name);
   });
 });
+
+@Directive({
+  selector: '[routerLink]', // brackets ensure it binds to the attribute
+  host: { '(click)': 'onClick()' }, // host ensures onClick is called when a click event is fired off
+})
+export class RouterLinkDirectiveStub {
+  @Input('routerLink') linkParams: any;
+  navigatedTo: any = null;
+
+  onClick() {
+    // allows checking if it were clicked, and with what values passed in
+    this.navigatedTo = this.linkParams;
+  }
+}
