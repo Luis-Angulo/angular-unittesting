@@ -66,7 +66,31 @@ describe('HeroesComponent (deep)', () => {
     */
     // emit the event by calling the delete method on the component directly
     heroComponents[0].componentInstance.delete.emit(undefined); // the template binding is keeping the reference to the right hero
+
+    // can also use the triggerEventHandler fn from the debugElement wrapper
+    // heroComponents[0].triggerEventHandler('delete', null);
     // Check that delete was called with the first hero
     expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
+  });
+
+  it('Should add a new hero to the list when the add button is clicked', () => {
+    mockHeroSvc.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+    // mocking the return of the service to simulate backend response
+    const name = 'Mr. Ice';
+    mockHeroSvc.addHero.and.returnValue(of({ id: 5, name, strength: 4 }));
+    // simulate filling in the name input
+    const inputElement = fixture.debugElement.query(By.css('input'))
+      .nativeElement;
+    inputElement.value = name;
+    // trigger the add function call using the button
+    const addButton = fixture.debugElement.queryAll(By.css('button'))[0];
+    addButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    // By this point the template should be rendering the list of heroes, including the one we just added
+    const heroText = fixture.debugElement.query(By.css('ul')).nativeElement
+      .textContent;
+    expect(heroText).toContain(name);
   });
 });
