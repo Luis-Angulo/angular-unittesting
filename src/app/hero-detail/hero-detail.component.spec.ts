@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
 import { HeroDetailComponent } from './hero-detail.component';
@@ -41,7 +41,8 @@ describe('HeroDetailComponent', () => {
     fixture.detectChanges();
 
     fixture.componentInstance.save();
-    tick(250); // fake awaits 250 ms by fast forwarding the clock inside zone.js
+    // tick(250); // fake awaits 250 ms by fast forwarding the clock inside zone.js
+    flush(); // automatically resolve any awaiting tasks by manipulating zone.js
 
     expect(mockHeroSvc.updateHero).toHaveBeenCalled();
   }));
