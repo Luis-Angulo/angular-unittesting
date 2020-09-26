@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
 import { HeroDetailComponent } from './hero-detail.component';
@@ -35,16 +35,14 @@ describe('HeroDetailComponent', () => {
     expect(text).toContain('SUPERDUDE'); // component capitalizes name
   });
 
-  // done is used to tell jasmine when the test is done
-  it('Should call updateHero when save is called', (done) => {
+  // wrapping async tests in fakeAsync
+  it('Should call updateHero when save is called', fakeAsync(() => {
     mockHeroSvc.updateHero.and.returnValue(of({})); // don't check the return
     fixture.detectChanges();
 
     fixture.componentInstance.save();
+    tick(250); // fake awaits 250 ms by fast forwarding the clock inside zone.js
 
-    setTimeout(() => {
-      expect(mockHeroSvc.updateHero).toHaveBeenCalled();
-      done();
-    }, 300);
-  });
+    expect(mockHeroSvc.updateHero).toHaveBeenCalled();
+  }));
 });
