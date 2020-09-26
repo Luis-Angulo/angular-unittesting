@@ -58,11 +58,14 @@ describe('HeroesComponent (deep)', () => {
     const heroComponents: DebugElement[] = fixture.debugElement.queryAll(
       By.directive(HeroComponent)
     );
-    // must mock the click handler
+    // emit the event by activating the button on the template
+    /*
     heroComponents[0]
       .query(By.css('button'))
       .triggerEventHandler('click', { stopPropagation: () => {} });
-
+    */
+    // emit the event by calling the delete method on the component directly
+    heroComponents[0].componentInstance.delete.emit(undefined); // the template binding is keeping the reference to the right hero
     // Check that delete was called with the first hero
     expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
   });
