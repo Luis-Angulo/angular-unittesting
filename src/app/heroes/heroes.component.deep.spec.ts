@@ -93,6 +93,22 @@ describe('HeroesComponent (deep)', () => {
       .textContent;
     expect(heroText).toContain(name);
   });
+
+  it('Should have the correct route for the first hero', () => {
+    mockHeroSvc.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+    const heroComponents = fixture.debugElement.queryAll(
+      By.directive(HeroComponent)
+    );
+
+    let routerLink = heroComponents[0]
+      .query(By.directive(RouterLinkDirectiveStub)) // get the debug element for the anchor tag
+      .injector.get(RouterLinkDirectiveStub); // get the actual directive from the debug element
+
+    heroComponents[0].query(By.css('a')).triggerEventHandler('click', null);
+
+    expect(routerLink.navigatedTo).toBe('/detail/1');
+  });
 });
 
 @Directive({
